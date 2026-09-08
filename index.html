@@ -54,17 +54,19 @@ h2.display{font-size:clamp(1.9rem,4vw,2.7rem);color:var(--navy)}
   background:var(--navy);
   color:var(--white);
   border-bottom:3px solid var(--royal);
+  transition:transform .28s ease;
 }
+.topbar.hidden{transform:translateY(-110%)}
 .topbar .wrap{display:flex;align-items:center;gap:28px;height:92px}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--white)}
 .brand{position:relative;align-self:flex-start;margin-top:8px;margin-bottom:-86px;z-index:5}
-.brand img{height:170px;width:auto;object-fit:contain;filter:drop-shadow(0 14px 26px rgba(4,10,28,.55))}
+.brand img{height:145px;width:auto;object-fit:contain;filter:drop-shadow(0 14px 26px rgba(4,10,28,.55))}
 .brand,.brand img{transition:all .25s ease}
 .topbar.scrolled .brand{margin-top:0;margin-bottom:0;align-self:center}
-.topbar.scrolled .brand img{height:72px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
+.topbar.scrolled .brand img{height:61px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
 @media (max-width:860px){
-  .brand{margin-bottom:-46px;margin-top:6px}
-  .brand img{height:120px}
+  .brand{margin-bottom:-38px;margin-top:6px}
+  .brand img{height:102px}
 }
 nav.main{margin-left:auto;display:flex;gap:26px}
 nav.main a{color:#D9E4F5;text-decoration:none;font-weight:600;font-size:.95rem}
@@ -466,7 +468,15 @@ footer a:hover{text-decoration:underline}
 <script>
 (function(){
   var bar = document.querySelector('.topbar');
-  function onScroll(){ bar.classList.toggle('scrolled', window.scrollY > 60); }
+  var lastY = window.scrollY;
+  function onScroll(){
+    var y = window.scrollY;
+    bar.classList.toggle('scrolled', y > 60);
+    // hide when scrolling down past the header, reveal when scrolling up
+    if (y > 140 && y > lastY) { bar.classList.add('hidden'); }
+    else { bar.classList.remove('hidden'); }
+    lastY = y;
+  }
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
 })();
